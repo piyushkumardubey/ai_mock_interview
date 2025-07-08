@@ -136,6 +136,11 @@ export async function isAuthenticated() {
 
 
 export async function getInterviewsByUserId(userId: string | undefined): Promise<Interview[] | null> {
+    // Return empty array if userId is undefined, null, or empty
+    if (!userId || userId.trim() === '') {
+        return [];
+    }
+
     // Return empty array if userId is undefined
     if (!userId) {
         return [];
@@ -158,17 +163,23 @@ export async function getLatestInterviews(params: GetLatestInterviewsParams): Pr
 
     const {userId , limit = 20} = params;
 
+    // Build query conditionally based on userId availability
+    let query = db
+        .collection('interviews')
+        .orderBy('createdAt', 'desc')
+        .where('finalized', '==', true)
+        .limit(limit);
+
+    // Only add userId filter if userId is defined and not empty
+    if (userId && userId.trim() !== '') {
+        query = query.where('userId', '!=', userId);
+    }
+
     let query = db
         .collection('interviews')
         .orderBy('createdAt', 'desc')
         .where('finalized', '==', true);
-
-    // Only add userId filter if userId is defined
-    if (userId) {
-        query = query.where('userId', '!=', userId);
-    }
-
-    const interviews = await query.limit(limit).get();
+    const interviews = await query.get();
 
     return interviews.docs.map((doc) => ({
         id: doc.id,
