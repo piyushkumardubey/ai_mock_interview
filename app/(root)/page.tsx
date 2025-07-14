@@ -1,21 +1,37 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import InterviewCard from '@/components/InterviewCard';
-import {getCurrentUser, getInterviewsByUserId, getLatestInterviews} from "@/lib/actions/auth.action";
+import { dummyInterviews } from '@/constants';
 
-const Page = async () => {
+// ✅ Uncomment this section when integrating backend
+/*
+import {
+  getCurrentUser,
+  getInterviewsByUserId,
+  getLatestInterviews
+} from '@/lib/actions/auth.action';
+*/
+
+const Page = () => {
+    // ✅ Replace dummyInterviews logic with this when using server-side data
+    /*
     const user = await getCurrentUser();
 
-    const [userInterviews , latestInterviews] = await Promise.all([
-        await getInterviewsByUserId(user?.id),
-        await getLatestInterviews({userId : user?.id})
+    const [userInterviews, latestInterviews] = await Promise.all([
+      getInterviewsByUserId(user?.id),
+      getLatestInterviews({ userId: user?.id }),
+    ]);
 
-    ])
+    const hasUserInterviews = userInterviews?.length > 0;
+    const hasLatestInterviews = latestInterviews?.length > 0;
+    */
 
-    const hasPastInterviews     = userInterviews ?.length  > 0;
-    const hasUpcomingInterviews =latestInterviews?.length > 0;
+    const hasUserInterviews = dummyInterviews.length > 0;
+    const hasLatestInterviews = dummyInterviews.length > 0;
 
     return (
         <>
@@ -45,12 +61,9 @@ const Page = async () => {
             <section className="flex flex-col gap-6 mt-8">
                 <h2>Your Interviews</h2>
                 <div className="interviews-section">
-                    {hasPastInterviews ? (
-                        userInterviews?.map((interview) => (
-                            <InterviewCard {... interview}
-                                key={interview.id}
-
-                            />
+                    {hasUserInterviews ? (
+                        dummyInterviews.map((interview) => (
+                            <InterviewCard {...interview} key={interview.id} />
                         ))
                     ) : (
                         <p>You haven&apos;t taken any interviews yet</p>
@@ -62,12 +75,9 @@ const Page = async () => {
             <section className="flex flex-col gap-6 mt-8">
                 <h2>Take Interviews</h2>
                 <div className="interviews-section">
-                    {hasUpcomingInterviews ? (
-                        latestInterviews?.map((interview) => (
-                            <InterviewCard {... interview}
-                                           key={interview.id}
-
-                            />
+                    {hasLatestInterviews ? (
+                        dummyInterviews.map((interview) => (
+                            <InterviewCard {...interview} key={interview.id} />
                         ))
                     ) : (
                         <p>There are no new interviews available</p>
@@ -77,5 +87,6 @@ const Page = async () => {
         </>
     );
 };
+
 
 export default Page;

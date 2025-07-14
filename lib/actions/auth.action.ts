@@ -135,10 +135,10 @@ export async function isAuthenticated() {
 }
 
 
-export async function getInterviewsByUserId(userId: string): Promise<Interview[] | null> {
+/*export async function getInterviewsByUserId(userId: string): Promise<Interview[] | null> {
     const interviews = await db
         .collection('interviews')
-            .where('userId', '==', userId)
+        .where('userId', '==', userId)
         .orderBy('createdAt', 'desc')
         .get();
 
@@ -146,10 +146,10 @@ export async function getInterviewsByUserId(userId: string): Promise<Interview[]
         id: doc.id,
         ...doc.data()
     })) as Interview[];
-}
+}*/
 
 
-export async function getLatestInterviews(params: GetLatestInterviewsParams): Promise<Interview[] | null> {
+/*export async function getLatestInterviews(params: GetLatestInterviewsParams): Promise<Interview[] | null> {
 
     const {userId , limit = 20} = params;
 
@@ -164,6 +164,6 @@ export async function getLatestInterviews(params: GetLatestInterviewsParams): Pr
     return interviews.docs.map((doc) => ({
         id: doc.id,
         ...doc.data()
-    })) as Interview[];
-}
+    })) as Interview[];*/
+
 
